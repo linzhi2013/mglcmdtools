@@ -12,7 +12,8 @@
 
 ## 3 Usage
     
-    from mglcmdtools import rm_and_mkdir, runcmd
+    from mglcmdtools import rm_and_mkdir, runcmd, longStrings_not_match_shortStrings
+
 
     rm_and_mkdir('Newdirectory')
 
@@ -23,6 +24,13 @@
     runcmd(cmd)
 
     runcmd(cmd, verbose=True)
+
+
+    Long_strings = ['AABB', 'CCDD', 'EEFF']
+    Short_strings = ['AA', 'EE']
+    longStrings_not_match_shortStrings(Long_strings, Short_strings)
+    # ['CCDD']
+
 
 ## 4 Author
 Guanliang MENG
