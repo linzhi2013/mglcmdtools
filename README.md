@@ -103,6 +103,17 @@ function `split_fasta_to_equal_size(fastafile=None, tot_file_num=10, outdir='./'
     A list of the subfiles' abspath
 
 
+function `extend_ambiguous_dna(seq=None, get_a_random_seq=False)`:
+
+    return a `map` iterator of all possible sequences given an ambiguous
+    DNA input.
+
+    if `get_a_random_seq=True`, return a randomly chosen sequence.
+
+    modified from:
+    https://stackoverflow.com/questions/27551921/how-to-extend-ambiguous-dna-sequence
+
+
 ## 4 Author
 Guanliang MENG
 
