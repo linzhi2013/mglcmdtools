@@ -2,7 +2,7 @@
 
 ## 1 Introduction
 
-`mglcmdtools` is a collection of common cmd tools intended to be used in Python3 scripts. By Guanliang MENG, see https://github.com/linzhi2013/mglcmdtools. 
+`mglcmdtools` is a collection of common cmd tools intended to be used in Python3 scripts. By Guanliang MENG, see https://github.com/linzhi2013/mglcmdtools.
 
 
 ## 2 Installation
@@ -11,8 +11,8 @@
 
 
 ## 3 Usage
-    
-    from mglcmdtools import rm_and_mkdir, runcmd, longStrings_not_match_shortStrings, read_fastaLike, read_fastaLike2
+
+    from mglcmdtools import rm_and_mkdir, runcmd, longStrings_not_match_shortStrings, read_fastaLike, read_fastaLike2, csv2dict, csv2tupe, split_fasta_to_equal_size
 
 
     rm_and_mkdir('Newdirectory')
@@ -54,6 +54,53 @@ Then read each record:
     for rec in read_fastaLike('seq.fa'):
         print('seqid line:', rec[0])
         print('sequence line 1:', rec[1])
+
+
+function `csv2dict`:
+
+    targeted file: a csv file containing a matrix.
+
+    by default, assuming the csv file does not have header row, and the first column (index 0) is the row names.
+
+    you must specify how many rows to be read.
+
+    1. read data from a csv file into a pandas Dataframe;
+    2. change the up triangular and low triangular to dictionary 'triu_dict' and 'tril_dict', respectively.
+
+    Parameter:
+        rm_self: remove the pair of self-to-self, default True.
+
+
+    Return:
+        (triu_dict, tril_dict)
+
+
+function `csv2dict:
+
+    targeted file: a csv file containing a matrix.
+
+    by default, assuming the csv file does not have header row, and the first column (index 0) is the row names.
+
+    you must specify how many rows to be read.
+
+    1. read data from a csv file into a pandas Dataframe;
+    2. change the up triangular and low triangular to LIST of tupes 'triu' and 'tril', respectively.
+
+    Parameter:
+        rm_self: remove the pair of self-to-self, default True.
+
+
+    Return:
+        (triu, tril)
+
+
+function `split_fasta_to_equal_size`:
+
+    Split a fasta file to `tot_file_num` subfiles, and all subfiles have
+    appropximately equal size.
+
+    Return:
+    A list of the subfiles' abspath
 
 
 ## 4 Author
