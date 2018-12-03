@@ -103,15 +103,37 @@ function `split_fasta_to_equal_size(fastafile=None, tot_file_num=10, outdir='./'
     A list of the subfiles' abspath
 
 
-function `extend_ambiguous_dna(seq=None, get_a_random_seq=False)`:
+function `extend_ambiguous_dna(seq=None, get_a_random_seq=False, get_first_seq=False)`:
 
     return a `map` iterator of all possible sequences given an ambiguous
     DNA input.
 
-    if `get_a_random_seq=True`, return a randomly chosen sequence.
+    if `get_a_random_seq=True`, return a randomly chosen sequence. Beware, if the seq is too long, and there are too many ambiguous sites,this can take
+    a lot of memory. It is at your own risk to use `get_a_random_seq=True`. I
+    would suggest you use `get_first_seq=True` instead.
+
+    if `get_first_seq=True`, return only the first sequence of the `map`
+    iterator. the result should always be the same for one input DNA.
+
+    if `get_a_random_seq=True` and `get_first_seq=True` at the same time,
+    only `get_first_seq=True` will work.
+
+    cannot deal with 'U' in RNA sequences.
+
+    the lower case or upper case of each base will be the same with input DNA.
 
     modified from:
     https://stackoverflow.com/questions/27551921/how-to-extend-ambiguous-dna-sequence
+
+
+function `extend_ambiguous_dna_randomly(seq=None)`:
+
+    return one sequence by randomly extending the input ambiguous DNA.
+
+    the lower case or upper case of each base will be the same with input DNA.
+
+    cannot deal with 'U' in RNA sequences.
+
 
 
 ## 4 Author
