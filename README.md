@@ -56,7 +56,7 @@ Then read each record:
         print('sequence line 1:', rec[1])
 
 
-function `csv2dict`:
+function `csv2dict(file=None, header=None, nrows=None, index_col=0, rm_self=True, **kwargs)`:
 
     targeted file: a csv file containing a matrix.
 
@@ -75,7 +75,7 @@ function `csv2dict`:
         (triu_dict, tril_dict)
 
 
-function `csv2dict:
+function `csv2tupe(file=None, header=None, nrows=None, index_col=0, rm_self=True, **kwargs)`:
 
     targeted file: a csv file containing a matrix.
 
@@ -94,7 +94,7 @@ function `csv2dict:
         (triu, tril)
 
 
-function `split_fasta_to_equal_size`:
+function `split_fasta_to_equal_size(fastafile=None, tot_file_num=10, outdir='./')`:
 
     Split a fasta file to `tot_file_num` subfiles, and all subfiles have
     appropximately equal size.
