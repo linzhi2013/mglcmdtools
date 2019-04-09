@@ -9,6 +9,7 @@ from Bio import Seq
 from itertools import product
 from random import randint
 import numpy as np
+import collections
 
 
 def rm_and_mkdir(directory, force=False):
@@ -169,19 +170,42 @@ def read_fastaLike2(file, seqid_pattern='^>', maxrecords=-1):
         raise StopIteration
 
 
-def csv2dict(file=None, header=None, nrows=None, index_col=0, rm_self=True, **kwargs):
+
+def get_all_key_to_all(triu_dict=None):
+    '''
+    by default, the lengthes of different sub-dictionaries returned by `csv2dict` function are different.
+
+    this function is to make sure each sub-dictionary has the same length.
+    '''
+    new_dict = collections.OrderedDict()
+    for key1 in triu_dict:
+        new_dict.setdefault(key1, {})
+        for key2 in triu_dict[key1]:
+            val = triu_dict[key1][key2]
+            new_dict[key1][key2] = val
+
+            if key2 not in new_dict:
+                new_dict.setdefault(key2, {})
+            new_dict[key2][key1] = val
+
+    return new_dict
+
+
+def csv2dict(file=None, header=None, nrows=None, index_col=0, rm_self=True, all_key_to_all=False, **kwargs):
     '''
     targeted file: a csv file containing a matrix.
 
     by default, assuming the csv file does not have header row, and the first column (index 0) is the row names.
 
-    you must specify how many rows to be read.
+    you may specify how many rows to be read. otherwise, whole file will be
+    read.
 
     1. read data from a csv file into a pandas Dataframe;
     2. change the up triangular and low triangular to dictionary 'triu_dict' and 'tril_dict', respectively.
 
     Parameter:
         rm_self: remove the pair of self-to-self, default True.
+        all_key_to_all: make sure each sub-dictionary has the same length.
 
 
     Return:
@@ -189,11 +213,13 @@ def csv2dict(file=None, header=None, nrows=None, index_col=0, rm_self=True, **kw
 
     '''
 
-    if not nrows:
-        raise ValueError('You must specify how many rows to be read!')
+    if nrows:
+        # raise ValueError('You must specify how many rows to be read!')
+        df = pd.read_csv(file, header=header, nrows=nrows,
+                         index_col=index_col, **kwargs)
+    else:
+        df = pd.read_csv(file, header=header, index_col=index_col, **kwargs)
 
-    df = pd.read_csv(file, header=header, nrows=nrows,
-                     index_col=index_col, **kwargs)
     for index, row_name in enumerate(df.index):
         df = df.rename(index=str, columns={df.columns[index]: row_name})
 
@@ -221,7 +247,12 @@ def csv2dict(file=None, header=None, nrows=None, index_col=0, rm_self=True, **kw
             tril_dict.setdefault(key1, {})
         tril_dict[key1][key2] = val
 
-    return triu_dict, tril_dict
+    if all_key_to_all:
+        new_triu_dict = get_all_key_to_all(triu_dict)
+        new_tril_dict = get_all_key_to_all(tril_dict)
+        return new_triu_dict, new_tril_dict
+    else:
+        return triu_dict, tril_dict
 
 
 def csv2tupe(file=None, header=None, nrows=None, index_col=0, rm_self=True, **kwargs):
@@ -243,11 +274,16 @@ def csv2tupe(file=None, header=None, nrows=None, index_col=0, rm_self=True, **kw
         (triu, tril)
 
     '''
-    if not nrows:
-        raise ValueError('You must specify how many rows to be read!')
+    #if not nrows:
+    #    raise ValueError('You must specify how many rows to be read!')
 
-    df = pd.read_csv(file, header=header, nrows=nrows,
-                     index_col=index_col, **kwargs)
+    if nrows:
+        # raise ValueError('You must specify how many rows to be read!')
+        df = pd.read_csv(file, header=header, nrows=nrows,
+                         index_col=index_col, **kwargs)
+    else:
+        df = pd.read_csv(file, header=header, index_col=index_col, **kwargs)
+
     for index, row_name in enumerate(df.index):
         df = df.rename(index=str, columns={df.columns[index]: row_name})
 
