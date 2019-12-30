@@ -10,6 +10,7 @@ from itertools import product
 from random import randint
 import numpy as np
 import collections
+import logging
 
 
 def rm_and_mkdir(directory, force=False):
@@ -426,3 +427,30 @@ def extend_ambiguous_dna_randomly(seq=None):
 
     return ''.join(new_seq)
 
+
+def get_logger(debug=False):
+    # 级别排序:CRITICAL > ERROR > WARNING > INFO > DEBUG
+    formatter = logging.Formatter(
+        "%(asctime)s - %(name)s - %(levelname)s - \n%(message)s\n")
+
+    logger = logging.getLogger(__name__)
+    logger.setLevel(logging.DEBUG)  # must be DEBUG, then 'ch' below works.
+    # logger.setFormatter(formatter)
+
+    fh = logging.FileHandler(os.path.basename(sys.argv[0]) + '.log')
+    if debug:
+        fh.setLevel(logging.DEBUG)
+    else:
+        fh.setLevel(logging.INFO)  # INFO level goes to the log file
+    fh.setFormatter(formatter)
+    logger.addHandler(fh)
+
+    ch = logging.StreamHandler()
+    if debug:
+        ch.setLevel(logging.DEBUG)
+    else:
+        ch.setLevel(logging.WARNING)  # only WARNING level will output on screen
+    ch.setFormatter(formatter)
+    logger.addHandler(ch)
+
+    return logger
